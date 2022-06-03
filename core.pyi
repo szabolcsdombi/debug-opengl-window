@@ -1,0 +1,6 @@
+from typing import Tuple
+
+
+def init() -> None: ...
+def update() -> bool: ...
+window_size: Tuple[int, int]
