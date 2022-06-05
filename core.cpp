@@ -2,6 +2,8 @@
 #include <Windows.h>
 #include <GL/GL.h>
 
+#include <powersetting.h>
+
 #define WGL_CONTEXT_PROFILE_MASK 0x9126
 #define WGL_CONTEXT_CORE_PROFILE_BIT 0x0001
 #define WGL_CONTEXT_MAJOR_VERSION 0x2091
@@ -48,6 +50,11 @@ PyObject * meth_init(PyObject * self, PyObject * args, PyObject * kwargs) {
     if (!PyArg_ParseTupleAndKeywords(args, kwargs, "|pp", keywords, &debug, &vsync)) {
         return NULL;
     }
+
+    HANDLE process = GetCurrentProcess();
+    SetPriorityClass(process, HIGH_PRIORITY_CLASS);
+    SetProcessPriorityBoost(process, false);
+    PowerSetActiveScheme(NULL, &GUID_MIN_POWER_SAVINGS);
 
     HINSTANCE hinst = GetModuleHandle(NULL);
     HCURSOR hcursor = (HCURSOR)LoadCursor(NULL, IDC_ARROW);
