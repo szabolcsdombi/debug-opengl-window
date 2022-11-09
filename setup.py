@@ -6,7 +6,7 @@ ext = Extension(
     define_macros=[('PY_SSIZE_T_CLEAN', None)],
     include_dirs=[],
     library_dirs=[],
-    libraries=['gdi32', 'user32', 'opengl32', 'powrprof'],
+    libraries=['gdi32', 'user32', 'opengl32', 'dwmapi', 'powrprof'],
 )
 
 setup(

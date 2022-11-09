@@ -1,8 +1,10 @@
 #include <Python.h>
-#include <Windows.h>
-#include <GL/GL.h>
 
-#include <powersetting.h>
+#define WINVER 0x0601
+#include <Windows.h>
+#include <Dwmapi.h>
+#include <PowerSetting.h>
+#include <GL/GL.h>
 
 #define WGL_CONTEXT_PROFILE_MASK 0x9126
 #define WGL_CONTEXT_CORE_PROFILE_BIT 0x0001
@@ -89,7 +91,7 @@ PyObject * meth_init(PyObject * self, PyObject * args, PyObject * kwargs) {
         return NULL;
     }
 
-    DWORD pfd_flags = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_GENERIC_ACCELERATED | PFD_DOUBLEBUFFER;
+    DWORD pfd_flags = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_GENERIC_ACCELERATED;
     PIXELFORMATDESCRIPTOR pfd = {sizeof(PIXELFORMATDESCRIPTOR), 1, pfd_flags, 0, 32};
 
     int pixelformat = ChoosePixelFormat(hdc, &pfd);
@@ -184,6 +186,7 @@ PyObject * meth_init(PyObject * self, PyObject * args, PyObject * kwargs) {
 
 PyObject * meth_update(PyObject * self) {
     SwapBuffers(hdc);
+    DwmFlush();
 
     MSG msg = {};
     while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
